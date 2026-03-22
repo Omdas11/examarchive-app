@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <!-- Book icon representing the exam archive -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M30,24 L30,84 L78,84 L78,24 Z"
+        android:strokeColor="#FFFFFF"
+        android:strokeWidth="0" />
+    <path
+        android:fillColor="#6650A4"
+        android:pathData="M36,34 L72,34 L72,40 L36,40 Z" />
+    <path
+        android:fillColor="#6650A4"
+        android:pathData="M36,46 L72,46 L72,52 L36,52 Z" />
+    <path
+        android:fillColor="#6650A4"
+        android:pathData="M36,58 L60,58 L60,64 L36,64 Z" />
+</vector>
