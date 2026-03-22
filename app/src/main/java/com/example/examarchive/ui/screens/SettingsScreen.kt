@@ -40,17 +40,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-
-private enum class ThemeOption(val label: String, val icon: ImageVector) {
-    System("System", Icons.Filled.BrightnessAuto),
-    Light("Light", Icons.Filled.BrightnessHigh),
-    Dark("Dark", Icons.Filled.Brightness4),
-}
+import com.example.examarchive.ui.theme.ThemeOption
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SettingsScreen() {
-    var selectedTheme by rememberSaveable { mutableStateOf(ThemeOption.System.name) }
+fun SettingsScreen(
+    themeOption: ThemeOption,
+    onThemeChange: (ThemeOption) -> Unit,
+) {
     var dsc by rememberSaveable { mutableStateOf("") }
     var dsm1 by rememberSaveable { mutableStateOf("") }
     var dsm2 by rememberSaveable { mutableStateOf("") }
@@ -87,11 +84,15 @@ fun SettingsScreen() {
                                 index = index,
                                 count = ThemeOption.entries.size,
                             ),
-                            onClick = { selectedTheme = option.name },
-                            selected = selectedTheme == option.name,
+                            onClick = { onThemeChange(option) },
+                            selected = themeOption == option,
                             icon = {
                                 Icon(
-                                    imageVector = option.icon,
+                                    imageVector = when (option) {
+                                        ThemeOption.System -> Icons.Filled.BrightnessAuto
+                                        ThemeOption.Light -> Icons.Filled.BrightnessHigh
+                                        ThemeOption.Dark -> Icons.Filled.Brightness4
+                                    },
                                     contentDescription = null,
                                     modifier = Modifier.size(16.dp),
                                 )
