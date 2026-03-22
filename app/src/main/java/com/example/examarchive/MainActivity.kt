@@ -17,6 +17,7 @@ import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -30,6 +31,9 @@ import com.example.examarchive.ui.screens.HistoryScreen
 import com.example.examarchive.ui.screens.LibraryScreen
 import com.example.examarchive.ui.screens.SettingsScreen
 import com.example.examarchive.ui.theme.ExamArchiveTheme
+import com.example.examarchive.ui.theme.ThemeOption
+import com.example.examarchive.ui.theme.ThemeViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
 
 sealed class Screen(val route: String, val label: String, val icon: ImageVector) {
     object Library : Screen("library", "Library", Icons.Filled.LibraryBooks)
@@ -50,15 +54,24 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            ExamArchiveTheme {
-                ExamArchiveApp()
+            val themeViewModel: ThemeViewModel = viewModel(factory = ThemeViewModel.factory(application))
+            val themeOption by themeViewModel.themeOption.collectAsState()
+
+            ExamArchiveTheme(themeOption = themeOption) {
+                ExamArchiveApp(
+                    themeOption = themeOption,
+                    onThemeChange = themeViewModel::setTheme
+                )
             }
         }
     }
 }
 
 @Composable
-fun ExamArchiveApp() {
+fun ExamArchiveApp(
+    themeOption: ThemeOption,
+    onThemeChange: (ThemeOption) -> Unit,
+) {
     val navController = rememberNavController()
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
@@ -94,7 +107,12 @@ fun ExamArchiveApp() {
             composable(Screen.Library.route) { LibraryScreen() }
             composable(Screen.Generate.route) { GenerateScreen() }
             composable(Screen.History.route) { HistoryScreen() }
-            composable(Screen.Settings.route) { SettingsScreen() }
+            composable(Screen.Settings.route) {
+                SettingsScreen(
+                    themeOption = themeOption,
+                    onThemeChange = onThemeChange
+                )
+            }
         }
     }
 }
